@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "title": "Complete project proposal for client meeting",
+    "category": "work",
+    "priority": "high",
+    "dueDate": "2024-01-15",
+    "completed": false,
+    "createdAt": "2024-01-10T09:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "Buy groceries for the week",
+    "category": "shopping",
+    "priority": "medium",
+    "dueDate": "2024-01-14",
+    "completed": false,
+    "createdAt": "2024-01-10T10:30:00.000Z"
+  },
+  {
+    "id": "3",
+    "title": "Schedule annual health checkup",
+    "category": "health",
+    "priority": "medium",
+    "dueDate": null,
+    "completed": false,
+    "createdAt": "2024-01-10T11:15:00.000Z"
+  },
+  {
+    "id": "4",
+    "title": "Finish reading 'The Power of Now'",
+    "category": "personal",
+    "priority": "low",
+    "dueDate": "2024-01-20",
+    "completed": true,
+    "createdAt": "2024-01-08T14:20:00.000Z"
+  },
+  {
+    "id": "5",
+    "title": "Prepare presentation slides for team meeting",
+    "category": "work",
+    "priority": "high",
+    "dueDate": "2024-01-16",
+    "completed": false,
+    "createdAt": "2024-01-10T16:45:00.000Z"
+  },
+  {
+    "id": "6",
+    "title": "Call mom to check in",
+    "category": "personal",
+    "priority": "medium",
+    "dueDate": "2024-01-14",
+    "completed": false,
+    "createdAt": "2024-01-10T18:30:00.000Z"
+  },
+  {
+    "id": "7",
+    "title": "Research new laptop options",
+    "category": "shopping",
+    "priority": "low",
+    "dueDate": null,
+    "completed": false,
+    "createdAt": "2024-01-09T12:00:00.000Z"
+  },
+  {
+    "id": "8",
+    "title": "Go for a 30-minute walk",
+    "category": "health",
+    "priority": "medium",
+    "dueDate": "2024-01-14",
+    "completed": true,
+    "createdAt": "2024-01-10T07:00:00.000Z"
+  }
+]

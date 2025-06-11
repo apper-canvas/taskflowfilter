@@ -1,0 +1,32 @@
+[
+  {
+    "id": "work",
+    "name": "Work",
+    "color": "#5B4FE5",
+    "count": 2
+  },
+  {
+    "id": "personal",
+    "name": "Personal",
+    "color": "#4ECDC4",
+    "count": 2
+  },
+  {
+    "id": "shopping",
+    "name": "Shopping",
+    "color": "#FF6B6B",
+    "count": 2
+  },
+  {
+    "id": "health",
+    "name": "Health",
+    "color": "#FFD93D",
+    "count": 2
+  },
+  {
+    "id": "finance",
+    "name": "Finance",
+    "color": "#8B85F0",
+    "count": 0
+  }
+]
