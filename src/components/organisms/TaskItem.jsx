@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { format, isToday, isTomorrow, isPast, isValid } from 'date-fns';
-import ApperIcon from './ApperIcon';
-import ConfettiExplosion from './ConfettiExplosion';
+import ApperIcon from '@/components/ApperIcon';
+import ConfettiExplosion from '@/components/organisms/ConfettiExplosion';
+import TaskCheckbox from '@/components/molecules/TaskCheckbox';
+import Input from '@/components/atoms/Input';
+import Button from '@/components/atoms/Button';
+import PriorityBadge from '@/components/molecules/PriorityBadge';
+import DueDateBadge from '@/components/molecules/DueDateBadge';
 
 const TaskItem = ({ task, onUpdate, onDelete, isEditing, onEdit, onCancelEdit }) => {
   const [title, setTitle] = useState(task.title);
@@ -40,34 +44,6 @@ const TaskItem = ({ task, onUpdate, onDelete, isEditing, onEdit, onCancelEdit })
     }
   };
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case 'high': return 'bg-accent';
-      case 'medium': return 'bg-warning';
-      case 'low': return 'bg-success';
-      default: return 'bg-gray-300';
-    }
-  };
-
-  const formatDueDate = (dateStr) => {
-    if (!dateStr) return null;
-    const date = new Date(dateStr);
-    if (!isValid(date)) return null;
-    
-    if (isToday(date)) return 'Today';
-    if (isTomorrow(date)) return 'Tomorrow';
-    return format(date, 'MMM d');
-  };
-
-  const isDueDateOverdue = (dateStr) => {
-    if (!dateStr) return false;
-    const date = new Date(dateStr);
-    return isValid(date) && isPast(date) && !isToday(date);
-  };
-
-  const dueDateText = formatDueDate(task.dueDate);
-  const isOverdue = isDueDateOverdue(task.dueDate);
-
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -77,40 +53,18 @@ const TaskItem = ({ task, onUpdate, onDelete, isEditing, onEdit, onCancelEdit })
     >
       <div className="flex items-start space-x-3">
         {/* Checkbox */}
-        <div className="flex-shrink-0 pt-1">
-          <motion.button
-            ref={checkboxRef}
-            onClick={handleToggleComplete}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className={`relative w-5 h-5 rounded-full border-2 transition-all duration-300 ${
-              task.completed
-                ? 'bg-primary border-primary'
-                : 'border-gray-300 hover:border-primary'
-            }`}
-          >
-            {task.completed && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-              >
-                <ApperIcon 
-                  name="Check" 
-                  size={12} 
-                  className="text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" 
-                />
-              </motion.div>
-            )}
-          </motion.button>
-        </div>
+        <TaskCheckbox
+          checked={task.completed}
+          onClick={handleToggleComplete}
+          checkboxRef={checkboxRef}
+        />
 
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
               {isEditing ? (
-                <input
+                <Input
                   ref={inputRef}
                   type="text"
                   value={title}
@@ -134,28 +88,8 @@ const TaskItem = ({ task, onUpdate, onDelete, isEditing, onEdit, onCancelEdit })
               
               {/* Meta information */}
               <div className="flex items-center space-x-3 mt-2">
-                {/* Priority indicator */}
-                <div className="flex items-center space-x-1">
-                  <div 
-                    className={`w-2 h-2 rounded-full ${getPriorityColor(task.priority)}`}
-                    title={`${task.priority} priority`}
-                  ></div>
-                  <span className="text-xs text-gray-500 capitalize">{task.priority}</span>
-                </div>
-                
-                {/* Due date */}
-                {dueDateText && (
-                  <div className={`text-xs px-2 py-1 rounded-full ${
-                    isOverdue && !task.completed
-                      ? 'bg-red-100 text-red-800'
-                      : 'bg-gray-100 text-gray-600'
-                  }`}>
-                    {isOverdue && !task.completed && (
-                      <ApperIcon name="AlertCircle" size={10} className="inline mr-1" />
-                    )}
-                    {dueDateText}
-                  </div>
-                )}
+                <PriorityBadge priority={task.priority} />
+                <DueDateBadge dueDate={task.dueDate} completed={task.completed} />
               </div>
             </div>
 
@@ -163,20 +97,20 @@ const TaskItem = ({ task, onUpdate, onDelete, isEditing, onEdit, onCancelEdit })
             <div className="flex items-center space-x-1 ml-3">
               {!isEditing && (
                 <>
-                  <button
+                  <Button
                     onClick={onEdit}
                     className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
                     title="Edit task"
                   >
                     <ApperIcon name="Edit2" size={14} />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={() => onDelete(task.id)}
                     className="p-1 text-gray-400 hover:text-red-500 transition-colors"
                     title="Delete task"
                   >
                     <ApperIcon name="Trash2" size={14} />
-                  </button>
+                  </Button>
                 </>
               )}
             </div>

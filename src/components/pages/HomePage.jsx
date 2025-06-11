@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'react-toastify';
-import TaskInput from '../components/TaskInput';
-import TaskList from '../components/TaskList';
-import CategoryFilter from '../components/CategoryFilter';
-import ProgressFooter from '../components/ProgressFooter';
-import KeyboardShortcuts from '../components/KeyboardShortcuts';
-import EmptyState from '../components/EmptyState';
-import { taskService } from '../services';
-import ApperIcon from '../components/ApperIcon';
+import TaskInput from '@/components/organisms/TaskInput';
+import TaskList from '@/components/organisms/TaskList';
+import CategoryFilter from '@/components/organisms/CategoryFilter';
+import ProgressFooter from '@/components/organisms/ProgressFooter';
+import KeyboardShortcuts from '@/components/organisms/KeyboardShortcuts';
+import EmptyState from '@/components/organisms/EmptyState';
+import { taskService } from '@/services';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
 
-const Home = () => {
+const HomePage = () => {
   const [tasks, setTasks] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState('all');
@@ -153,12 +154,12 @@ const Home = () => {
           <ApperIcon name="AlertCircle" className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Something went wrong</h2>
           <p className="text-gray-600 mb-4">{error}</p>
-          <button
+          <Button
             onClick={loadTasks}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
           >
             Try Again
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -177,13 +178,13 @@ const Home = () => {
             <h1 className="text-3xl font-bold font-heading text-gray-900">
               TaskFlow
             </h1>
-            <button
+            <Button
               onClick={() => setShowShortcuts(true)}
               className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
               title="Keyboard shortcuts (Ctrl+?)"
             >
               <ApperIcon name="Keyboard" size={20} />
-            </button>
+            </Button>
           </div>
           
           <TaskInput 
@@ -251,4 +252,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

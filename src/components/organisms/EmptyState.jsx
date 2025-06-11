@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import ApperIcon from './ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
 
 const EmptyState = ({ activeCategory, onShowAll, hasAnyTasks }) => {
   const getEmptyStateContent = () => {
@@ -65,15 +66,15 @@ const EmptyState = ({ activeCategory, onShowAll, hasAnyTasks }) => {
       </p>
       
       {actionLabel && onAction && (
-        <motion.button
-          onClick={onAction}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-sm"
-        >
-          <ApperIcon name="Eye" className="w-4 h-4 mr-2" />
-          {actionLabel}
-        </motion.button>
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <Button
+            onClick={onAction}
+            className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-sm"
+          >
+            <ApperIcon name="Eye" className="w-4 h-4 mr-2" />
+            {actionLabel}
+          </Button>
+        </motion.div>
       )}
 
       {/* Helpful tips for new users */}

@@ -1,7 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import ApperIcon from './ApperIcon';
+import { motion, AnimatePresence } from 'framer-motion';
 import { format, addDays, isToday, isTomorrow } from 'date-fns';
+import ApperIcon from '@/components/ApperIcon';
+import Input from '@/components/atoms/Input';
+import Button from '@/components/atoms/Button';
+import CategoryPill from '@/components/molecules/CategoryPill';
+import PriorityBadge from '@/components/molecules/PriorityBadge';
+import DueDateBadge from '@/components/molecules/DueDateBadge';
 
 const TaskInput = ({ onCreateTask, categories }) => {
   const [title, setTitle] = useState('');
@@ -94,13 +99,7 @@ const TaskInput = ({ onCreateTask, categories }) => {
     { label: 'Next Week', value: format(addDays(new Date(), 7), 'yyyy-MM-dd') }
   ];
 
-  const formatDueDate = (dateStr) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    if (isToday(date)) return 'Today';
-    if (isTomorrow(date)) return 'Tomorrow';
-    return format(date, 'MMM d');
-  };
+  const currentCategory = categories.find(cat => cat.id === category);
 
   return (
     <motion.div
@@ -111,7 +110,7 @@ const TaskInput = ({ onCreateTask, categories }) => {
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Main Input */}
         <div className="relative">
-          <input
+          <Input
             ref={inputRef}
             type="text"
             value={title}
@@ -123,22 +122,23 @@ const TaskInput = ({ onCreateTask, categories }) => {
             {(category !== 'personal' || priority !== 'medium' || dueDate) && (
               <div className="flex items-center space-x-1">
                 {priority === 'high' && (
-                  <span className="w-2 h-2 bg-accent rounded-full"></span>
+                  <PriorityBadge priority={priority} className="!space-x-0 !mr-0" />
+                )}
+                {currentCategory && currentCategory.id !== 'personal' && (
+                  <CategoryPill category={currentCategory} showCount={false} includeIcon={false} />
                 )}
                 {dueDate && (
-                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    {formatDueDate(dueDate)}
-                  </span>
+                  <DueDateBadge dueDate={dueDate} />
                 )}
               </div>
             )}
-            <button
+            <Button
               type="button"
               onClick={() => setShowAdvanced(!showAdvanced)}
               className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <ApperIcon name="Settings" size={16} />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -158,22 +158,14 @@ const TaskInput = ({ onCreateTask, categories }) => {
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat) => (
-                    <button
+                    <CategoryPill
                       key={cat.id}
-                      type="button"
+                      category={cat}
+                      isActive={category === cat.id}
                       onClick={() => setCategory(cat.id)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                        category === cat.id
-                          ? 'bg-primary text-white shadow-sm'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      <span 
-                        className="w-2 h-2 rounded-full inline-block mr-2"
-                        style={{ backgroundColor: cat.color }}
-                      ></span>
-                      {cat.name}
-                    </button>
+                      showCount={false}
+                      includeIcon={false}
+                    />
                   ))}
                 </div>
               </div>
@@ -189,7 +181,7 @@ const TaskInput = ({ onCreateTask, categories }) => {
                     { value: 'medium', label: 'Medium', color: 'bg-yellow-100 text-yellow-800' },
                     { value: 'high', label: 'High', color: 'bg-red-100 text-red-800' }
                   ].map((option) => (
-                    <button
+                    <Button
                       key={option.value}
                       type="button"
                       onClick={() => setPriority(option.value)}
@@ -200,7 +192,7 @@ const TaskInput = ({ onCreateTask, categories }) => {
                       }`}
                     >
                       {option.label}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -212,7 +204,7 @@ const TaskInput = ({ onCreateTask, categories }) => {
                 </label>
                 <div className="flex gap-2 mb-2">
                   {getQuickDateOptions().map((option) => (
-                    <button
+                    <Button
                       key={option.label}
                       type="button"
                       onClick={() => setDueDate(option.value)}
@@ -223,19 +215,19 @@ const TaskInput = ({ onCreateTask, categories }) => {
                       }`}
                     >
                       {option.label}
-                    </button>
+                    </Button>
                   ))}
                   {dueDate && (
-                    <button
+                    <Button
                       type="button"
                       onClick={() => setDueDate('')}
                       className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200"
                     >
                       Clear
-                    </button>
+                    </Button>
                   )}
                 </div>
-                <input
+                <Input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
@@ -247,16 +239,16 @@ const TaskInput = ({ onCreateTask, categories }) => {
         </AnimatePresence>
 
         {/* Submit Button */}
-        <motion.button
-          type="submit"
-          disabled={!title.trim()}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-primary text-white py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all duration-200 flex items-center justify-center"
-        >
-          <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
-          Add Task
-        </motion.button>
+        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+          <Button
+            type="submit"
+            disabled={!title.trim()}
+            className="w-full bg-primary text-white py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-all duration-200 flex items-center justify-center"
+          >
+            <ApperIcon name="Plus" className="w-4 h-4 mr-2" />
+            Add Task
+          </Button>
+        </motion.div>
       </form>
     </motion.div>
   );

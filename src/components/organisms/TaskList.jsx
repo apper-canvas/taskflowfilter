@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import TaskItem from './TaskItem';
+import TaskItem from '@/components/organisms/TaskItem';
 
 const TaskList = ({ tasks, onUpdateTask, onDeleteTask }) => {
   const [editingId, setEditingId] = useState(null);

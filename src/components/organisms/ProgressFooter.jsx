@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
-import ApperIcon from './ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
+import ProgressRing from '@/components/molecules/ProgressRing';
+import ProgressBar from '@/components/molecules/ProgressBar';
 
 const ProgressFooter = ({ completed, total }) => {
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
@@ -14,33 +16,7 @@ const ProgressFooter = ({ completed, total }) => {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-3">
-            <div className="relative w-12 h-12">
-              {/* Progress ring */}
-              <svg className="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
-                <path
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  fill="none"
-                  stroke="#e5e7eb"
-                  strokeWidth="2"
-                />
-                <motion.path
-                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  fill="none"
-                  stroke="#5B4FE5"
-                  strokeWidth="2"
-                  strokeDasharray="100"
-                  initial={{ strokeDashoffset: 100 }}
-                  animate={{ strokeDashoffset: 100 - percentage }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
-                  strokeLinecap="round"
-                />
-              </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-sm font-bold text-primary">
-                  {percentage}%
-                </span>
-              </div>
-            </div>
+            <ProgressRing percentage={percentage} size={48} />
             <div>
               <p className="text-sm font-medium text-gray-900">
                 {completed} of {total} tasks completed
@@ -79,14 +55,7 @@ const ProgressFooter = ({ completed, total }) => {
         </div>
 
         {/* Progress bar */}
-        <div className="w-full bg-gray-200 rounded-full h-2">
-          <motion.div
-            className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          />
-        </div>
+        <ProgressBar percentage={percentage} />
       </div>
     </motion.div>
   );

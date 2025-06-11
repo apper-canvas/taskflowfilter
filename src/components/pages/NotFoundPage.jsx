@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import ApperIcon from '../components/ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
 
-const NotFound = () => {
+const NotFoundPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <motion.div
@@ -22,16 +23,17 @@ const NotFound = () => {
         <p className="text-lg text-gray-600 mb-8">
           The page you're looking for doesn't exist.
         </p>
-        <Link
-          to="/home"
-          className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
-        >
-          <ApperIcon name="ArrowLeft" className="w-4 h-4 mr-2" />
-          Back to Tasks
+        <Link to="/home">
+          <Button
+            className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
+          >
+            <ApperIcon name="ArrowLeft" className="w-4 h-4 mr-2" />
+            Back to Tasks
+          </Button>
         </Link>
       </motion.div>
     </div>
   );
 };
 
-export default NotFound;
+export default NotFoundPage;
